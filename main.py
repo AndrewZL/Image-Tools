@@ -7,6 +7,7 @@ How:  Highly optimized with NumPy and usage is from command line only.
 import numpy as np
 from PIL import Image
 import argparse
+import utils
 
 
 def calculate_black_percentage(img, size):
@@ -26,14 +27,17 @@ def calculate_thresh_percentage(img, size, th):
     return b/size * 100
 
 
-def darken(img, th=50):
+def darken(img, th=50, lum=False):
     """
-    Darkens all pixels with an average value less than threshold
-    TODO: add functionality to darkening based on luminosity
+    Darkens all pixels with an average value less than threshold based on mean value of RGB or luminosity
     :param img: numpy array of image
     :param th: threshold for darkening
+    :param lum: if darken based on human perceived brightness (luminosity)
     :return: a numpy array of image with all pixels below the threshold set to true black
     """
+    if lum:
+        img_lum = utils.calculate_luminosity(utils.transform_colour_space(img_arr))
+        return np.where(img_lum < th, img, 0)
     return np.where(np.moveaxis(np.array([np.mean(img, axis=2) > th]*3), 0, -1), img, 0)
 
 
