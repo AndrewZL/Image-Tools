@@ -45,13 +45,13 @@ if __name__ == '__main__':
     # Argument parser
     parser = argparse.ArgumentParser(description='Load Image')
     parser.add_argument('--i', dest="input", required=True, help="image file input path", metavar="FILE")
-    parser.add_argument('--o', dest="output", required=False, help="saved darkened image file output path", metavar="FILE")
-    parser.add_argument('--th', dest="th", required=False, help="threshold for blacking", type=int)
+    parser.add_argument('--o', dest="output", required=True, help="saved darkened image file output path", metavar="FILE")
+    parser.add_argument('--th', dest="th", required=True, help="threshold for blacking", type=int)
     args = parser.parse_args()
 
     # Open input image
     image = Image.open(args.input)
-    img_arr = np.array(image)
+    img_arr = np.array(image)[:, :, :3]
     total = image.height * image.width
     thresh = args.th
 

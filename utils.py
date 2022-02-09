@@ -1,7 +1,7 @@
-from PIL import ImageCms
+from PIL import ImageCms, Image
 import io
 import numpy as np
-
+import os
 
 def transform_colour_space(im):
     """
@@ -39,3 +39,14 @@ def calculate_luminosity(img_arr):
     return luminosity
 
 
+def batch_resize(src_dir, dest_dir, w, h):
+    for image in os.listdir(src_dir):
+        src_path = os.path.join(src_dir, image)
+        dest_path = os.path.join(dest_dir, image)
+        img = Image.open(src_path)
+        img = img.resize((w, h))
+        img.save(dest_path)
+
+
+if __name__ == '__main__':
+    batch_resize("D:\Andrew's Photos\Stock Images\OUTDOOR\Forest", "D:\Andrew's Photos\Stock Images\OUTDOOR", 800, 800)
